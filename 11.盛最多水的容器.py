@@ -9,19 +9,28 @@
 #
 
 # @lc code=start
-from collections import deque
-
 class Solution:
     def maxArea(self, height: List[int]) -> int:
+        left = [None] * 10001
+        right = [None] * 10001
+        h_max = height[0]
+        h_min = height[0]
+        for i, h in enumerate(height):
+            if left[h] is None:
+                left[h] = right[h] = i
+            else:
+                right[h] = i
+            h_min = min(h_min, h)
+            h_max = max(h_max, h)
+        most_left = left[h_max]
+        most_right = right[h_max]
         result = 0
-        d = deque()
-        d.append((height[0], 0))
-        for i in range(1, len(height)):
-            h2 = height[i]
-            for h1, x in d:
-                result = max(result, min(h1, h2) * (i - x))
-            if h2 > d[-1][0]:
-                d.append((h2, i))
+        for i in range(h_max, h_min - 1, -1):
+            if left[i] is None:
+                continue
+            most_left = min(left[i], most_left)
+            most_right = max(right[i], most_right)
+            result = max(i * (most_right - most_left), result)
         return result
 
 # print(Solution().maxArea([1,8,6,2,5,4,8,3,7]))
