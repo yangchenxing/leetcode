@@ -6,7 +6,7 @@
 
 # @lc code=start
 # from typing import *
-from collections import defaultdict, deque
+from collections import defaultdict
 
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
@@ -15,7 +15,7 @@ class Solution:
             counts[n] += 1
         nums = sorted(counts.keys())
         
-        result = deque()
+        result = []
         
         for i, ni in enumerate(nums):
             cnt = counts[ni]
@@ -32,7 +32,7 @@ class Solution:
                     break
                 if nk in counts:
                     result.append((ni, nj, nk))
-        return list(result)
+        return result
 
 # print(Solution().threeSum([-1,0,1,2,-1,-4]))
 # print(Solution().threeSum([0,1,1]))
