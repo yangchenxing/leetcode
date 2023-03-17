@@ -13,37 +13,37 @@ class Solution:
 
     @staticmethod
     def find_with_pivot(nums, lo, hi, target):
-        if hi - lo <= 16:
-            return Solution.simple_find(nums, lo, hi, target)
-        mid = (hi + lo) // 2
-        num_mid = nums[mid]
-        if num_mid == target:
-            return mid
-        elif num_mid < nums[lo]:
-            # pivot on left
-            if num_mid <= target <= nums[hi - 1]:
-                return Solution.find_without_pivot(nums, mid, hi, target)
+        while hi - lo > 16:
+            mid = (hi + lo) // 2
+            num_mid = nums[mid]
+            if num_mid == target:
+                return mid
+            elif num_mid < nums[lo]:
+                # pivot on left
+                if num_mid <= target <= nums[hi - 1]:
+                    return Solution.find_without_pivot(nums, mid, hi, target)
+                else:
+                    hi = mid
             else:
-                return Solution.find_with_pivot(nums, lo, mid, target)
-        else:
-            # pivot on right
-            if nums[lo] <= target <= num_mid:
-                return Solution.find_without_pivot(nums, lo, mid, target)
-            else:
-                return Solution.find_with_pivot(nums, mid, hi, target)
+                # pivot on right
+                if nums[lo] <= target <= num_mid:
+                    return Solution.find_without_pivot(nums, lo, mid, target)
+                else:
+                    lo = mid
+        return Solution.simple_find(nums, lo, hi, target)
 
     @staticmethod
     def find_without_pivot(nums, lo, hi, target):
-        if hi - lo <= 8:
-            return Solution.simple_find(nums, lo, hi, target)
-        mid = (hi + lo) // 2
-        num_mid = nums[mid]
-        if target == num_mid:
-            return mid
-        if target < num_mid:
-            return Solution.find_without_pivot(nums, lo, mid, target)
-        else:
-            return Solution.find_without_pivot(nums, mid, hi, target)
+        while hi - lo > 16:
+            mid = (hi + lo) // 2
+            num_mid = nums[mid]
+            if target == num_mid:
+                return mid
+            if target < num_mid:
+                hi = mid
+            else:
+                lo = mid
+        return Solution.simple_find(nums, lo, hi, target)
 
     @staticmethod
     def simple_find(nums, lo, hi, target):
